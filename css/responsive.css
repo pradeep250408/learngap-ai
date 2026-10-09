@@ -1,0 +1,327 @@
+/* ============================================================
+   LearnGap AI — Responsive Light Blue Academic CSS
+   ============================================================ */
+
+.landing-page {
+  background: #ffffff;
+  overflow-x: hidden;
+}
+
+/* Hero Section */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  position: relative;
+  background: radial-gradient(ellipse at 30% 50%, rgba(56,189,248,0.15) 0%, transparent 60%),
+              radial-gradient(ellipse at 80% 20%, rgba(2,132,199,0.12) 0%, transparent 50%),
+              #f0f9ff;
+  background-image: 
+    radial-gradient(ellipse at 30% 50%, rgba(56,189,248,0.15) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 20%, rgba(2,132,199,0.12) 0%, transparent 50%),
+    linear-gradient(to right, rgba(2, 132, 199, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(2, 132, 199, 0.05) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 48px 48px, 48px 48px;
+}
+
+.hero-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 80px 48px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+
+.hero-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: #ffffff;
+  border: 1px solid var(--primary-300);
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--primary-700);
+  margin-bottom: 20px;
+  box-shadow: var(--shadow-sm);
+}
+
+.hero-title {
+  font-size: clamp(2.25rem, 4.5vw, 3.5rem);
+  font-weight: 900;
+  color: var(--gray-900);
+  line-height: 1.15;
+  margin-bottom: 20px;
+}
+
+.hero-title .highlight {
+  background: linear-gradient(135deg, var(--primary-500), var(--primary-700));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-subtitle {
+  font-size: 1.1rem;
+  color: var(--gray-600);
+  line-height: 1.7;
+  margin-bottom: 32px;
+  max-width: 480px;
+}
+
+.hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+/* Feature Cards */
+.feature-card {
+  padding: 28px;
+  border-radius: 16px;
+  border: 1px solid var(--primary-200);
+  background: #ffffff;
+  transition: all var(--transition);
+  box-shadow: var(--shadow-sm);
+}
+
+.feature-card:hover {
+  border-color: var(--primary-400);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-4px);
+}
+
+/* Navbar */
+.landing-nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 200;
+  background: rgba(255,255,255,0.9);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--primary-100);
+  padding: 0 48px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Auth Page */
+.auth-page {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.auth-left {
+  background: linear-gradient(180deg, #0f172a 0%, #082f49 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 60px;
+  position: relative;
+  overflow: hidden;
+}
+
+.auth-right {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px;
+  background: var(--bg-page);
+}
+
+/* ── Comprehensive Responsive Media Queries ── */
+
+/* Laptop / Large Tablets (max-width: 1024px) */
+@media (max-width: 1024px) {
+  .hero-content { grid-template-columns: 1fr; gap: 48px; padding: 60px 32px; }
+  .auth-page { grid-template-columns: 1fr; }
+  .auth-left { display: none; }
+  .auth-right { padding: 32px 20px; }
+  .dashboard-grid { grid-template-columns: 1fr 340px; gap: 20px; }
+  .gaps-layout { grid-template-columns: 1fr 300px; gap: 20px; }
+}
+
+/* Medium Tablets & Mobile Devices (max-width: 900px) */
+@media (max-width: 900px) {
+  .main-content { margin-left: 0 !important; width: 100% !important; min-height: 100vh; }
+  .sidebar { 
+    position: fixed; 
+    left: 0; top: 0; bottom: 0; 
+    transform: translateX(-100%); 
+    z-index: 400; 
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 8px 0 24px rgba(0,0,0,0.25);
+  }
+  .sidebar.open { transform: translateX(0); }
+  .sidebar-overlay { 
+    display: block !important;
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(4px);
+    z-index: 350;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+  .sidebar-overlay.show { opacity: 1; pointer-events: auto; }
+
+  /* Topbar Adjustments */
+  .topbar { 
+    padding: 0 16px; 
+    height: 60px;
+    gap: 10px;
+  }
+  .hamburger-btn { display: flex !important; }
+  .topbar-actions { gap: 8px; }
+
+  /* Page Content Padding */
+  .page-content { padding: 16px; }
+
+  /* Dashboard & Layout Grids collapse to single column */
+  .dashboard-grid { grid-template-columns: 1fr !important; gap: 20px; }
+  .gaps-layout { grid-template-columns: 1fr !important; gap: 20px; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 12px; }
+
+  /* Header Greeting Card */
+  .greeting-section { padding: 20px; flex-direction: column; align-items: flex-start; gap: 14px; }
+  .greeting-actions { width: 100%; justify-content: flex-start; }
+}
+
+/* Mobile Screens (max-width: 768px) */
+@media (max-width: 768px) {
+  /* Typography scale for small screens */
+  h1 { font-size: 1.65rem !important; }
+  h2 { font-size: 1.35rem !important; }
+  h3 { font-size: 1.15rem !important; }
+
+  .topbar {
+    flex-wrap: wrap;
+    height: auto;
+    padding: 10px 14px;
+    gap: 8px;
+  }
+
+  /* Branch selector on topbar */
+  #dept-selector {
+    font-size: 0.8rem !important;
+    padding: 4px 20px 4px 8px !important;
+    max-width: 160px;
+  }
+
+  /* Filter Chips horizontal scroll */
+  .chip-group {
+    display: flex !important;
+    overflow-x: auto !important;
+    white-space: nowrap !important;
+    padding-bottom: 8px;
+    margin-bottom: 16px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .chip-group::-webkit-scrollbar { display: none; }
+  .chip { flex-shrink: 0; }
+
+  /* Quiz Cards & Options Grid */
+  .options-grid {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+  .option-btn {
+    padding: 14px 16px !important;
+    font-size: 0.95rem !important;
+  }
+
+  /* Quiz Progress Bar & Stats */
+  .session-progress {
+    flex-wrap: wrap !important;
+    gap: 12px !important;
+    padding: 12px 14px !important;
+  }
+  .session-stat { flex: 1 1 30%; text-align: center; }
+  .session-divider { display: none; }
+
+  /* Explanation & Answer Comparison */
+  .answer-comparison {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
+  /* Practice Mode Selector Toggle Bar */
+  .mode-toggle-container {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+  }
+  .mode-toggle-btns {
+    width: 100%;
+    display: flex;
+  }
+  .mode-toggle-btns .btn {
+    flex: 1;
+    text-align: center;
+    justify-content: center;
+  }
+
+  /* Modal Dialog Responsive width */
+  .modal-dialog {
+    width: 95% !important;
+    max-width: 100% !important;
+    margin: 10px !important;
+    max-height: 90vh !important;
+  }
+
+  /* Buttons on mobile */
+  .btn-lg {
+    padding: 12px 18px !important;
+    font-size: 0.95rem !important;
+  }
+}
+
+/* Small Mobile Screens (max-width: 576px) */
+@media (max-width: 576px) {
+  .page-content { padding: 12px 10px; }
+  .stats-grid { grid-template-columns: 1fr !important; gap: 10px; }
+  
+  .card-body { padding: 16px !important; }
+  .card-header { padding: 14px 16px !important; }
+  
+  .topbar-actions {
+    width: 100%;
+    justify-content: space-between;
+    margin-left: 0 !important;
+  }
+
+  /* Mobile gap card actions stack */
+  .gap-card-actions {
+    flex-direction: column;
+    align-items: stretch !important;
+    gap: 8px !important;
+    margin-top: 12px;
+  }
+  .gap-card-actions .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .quiz-timer { font-size: 0.8rem; padding: 4px 8px; }
+  .current-streak-badge { font-size: 0.78rem; padding: 4px 8px; }
+
+  /* Q&A Accordion Item */
+  .qa-card {
+    padding: 14px !important;
+  }
+}
+
+/* Very Small Mobile Screens (max-width: 400px) */
+@media (max-width: 400px) {
+  body { font-size: 14px; }
+  .logo-text { font-size: 1rem; }
+  .greeting-text h1 { font-size: 1.35rem !important; }
+  .btn { padding: 8px 12px; font-size: 0.82rem; }
+}

@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Progress — LearnGap AI</title>
+  <meta name="description" content="Track your learning progress, accuracy trends, weekly activity, and topic mastery over time.">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+<div class="sidebar-overlay" aria-hidden="true"></div>
+<div class="app-shell">
+
+  <aside class="sidebar" role="navigation" aria-label="Main navigation">
+    <div class="sidebar-logo"><div class="logo-icon">🧠</div><div class="logo-text">Learn<span>Gap</span> AI</div></div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Menu</div>
+      <a href="dashboard.html" class="nav-item" data-page="dashboard"><span class="nav-icon">📊</span> Dashboard</a>
+      <a href="practice.html" class="nav-item" data-page="practice"><span class="nav-icon">🎯</span> Practice</a>
+      <a href="gaps.html" class="nav-item" data-page="gaps"><span class="nav-icon">🔍</span> Learning Gaps</a>
+      <a href="progress.html" class="nav-item active" data-page="progress" aria-current="page"><span class="nav-icon">📈</span> Progress</a>
+      <a href="roadmap.html" class="nav-item" data-page="roadmap"><span class="nav-icon">🗺️</span> Roadmap</a>
+      <a href="profile.html" class="nav-item" data-page="profile"><span class="nav-icon">👤</span> Profile</a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="sidebar-user" onclick="navigate('profile.html')" role="button" tabindex="0">
+        <div class="user-avatar"><img src="assets/images/student_avatar.png" alt="Alex Johnson Profile"></div>
+        <div class="user-info"><div class="user-name">Alex Johnson</div><div class="user-level" id="sidebar-dept-name">CSE Student</div></div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main-content" role="main">
+    <header class="topbar">
+      <button class="hamburger-btn" aria-label="Open navigation" id="hamburger-btn"><span></span><span></span><span></span></button>
+      
+      <!-- Department Selector -->
+      <div style="display:flex; align-items:center; gap:8px;">
+        <span style="font-size:0.8rem; font-weight:700; color:var(--gray-500); text-transform:uppercase; letter-spacing:0.05em;">Branch:</span>
+        <select id="dept-selector" class="form-control" style="padding:4px 28px 4px 10px; font-size:0.85rem; font-weight:700; width:auto; border-color:var(--primary-300); color:var(--primary-700); background-color:var(--primary-50);" aria-label="Select Engineering Branch">
+          <option value="CSE">Computer Science (CSE)</option>
+          <option value="ECE">Electronics & Comm (ECE)</option>
+          <option value="EEE">Electrical & Electronics (EEE)</option>
+          <option value="ME">Mechanical Engg (ME)</option>
+          <option value="CE">Civil Engg (CE)</option>
+          <option value="AIDS">AI & Data Science (AI/DS)</option>
+        </select>
+      </div>
+
+      <div class="topbar-actions" style="margin-left:auto;">
+        <a href="practice.html" class="btn btn-primary btn-sm" id="progress-practice-btn">🎯 Practice</a>
+      </div>
+    </header>
+
+    <div class="page-content">
+
+      <!-- Summary Stats -->
+      <div class="stats-grid mb-lg stagger-children">
+        <div class="metric-card animate-fade-up">
+          <div class="metric-icon icon-indigo">📊</div>
+          <div class="metric-body">
+            <div class="metric-label">Overall Progress</div>
+            <div class="metric-value" id="prog-overall">0%</div>
+            <div class="metric-delta up">↑ +18% in 2 weeks</div>
+          </div>
+        </div>
+        <div class="metric-card animate-fade-up">
+          <div class="metric-icon icon-blue">📝</div>
+          <div class="metric-body">
+            <div class="metric-label">Total Answered</div>
+            <div class="metric-value" id="prog-total">0</div>
+            <div class="metric-delta up">↑ +23 this week</div>
+          </div>
+        </div>
+        <div class="metric-card animate-fade-up">
+          <div class="metric-icon icon-green">✅</div>
+          <div class="metric-body">
+            <div class="metric-label">Avg Accuracy</div>
+            <div class="metric-value" id="prog-accuracy">0%</div>
+            <div class="metric-delta up">↑ vs 68% last week</div>
+          </div>
+        </div>
+        <div class="metric-card animate-fade-up">
+          <div class="metric-icon icon-orange">🔥</div>
+          <div class="metric-body">
+            <div class="metric-label">Study Streak</div>
+            <div class="metric-value" id="prog-streak">7</div>
+            <div class="metric-delta" style="color:var(--warning-600)">days 🔥</div>
+          </div>
+        </div>
+        <div class="metric-card animate-fade-up">
+          <div class="metric-icon icon-green">⭐</div>
+          <div class="metric-body">
+            <div class="metric-label">Concepts Mastered</div>
+            <div class="metric-value" id="prog-mastered">0</div>
+            <div class="metric-delta up">↑ in branch</div>
+          </div>
+        </div>
+        <div class="metric-card animate-fade-up">
+          <div class="metric-icon icon-purple">📅</div>
+          <div class="metric-body">
+            <div class="metric-label">Days Active</div>
+            <div class="metric-value" id="prog-days">21</div>
+            <div class="metric-delta" style="color:var(--primary-600)">of last 30 days</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Charts Row 1 -->
+      <div class="progress-chart-grid mb-lg">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="section-title">📈 Mastery Over Time</div>
+              <div class="section-subtitle">Overall branch mastery score analysis</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div style="height:250px;">
+              <canvas id="mastery-trend-chart" aria-label="Overall mastery trend chart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><div class="section-title">Subject Radar</div></div>
+          <div class="card-body">
+            <div style="height:250px; display:flex; align-items:center; justify-content:center;">
+              <canvas id="progress-radar-chart" aria-label="Topic radar chart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Activity Heatmap + Strongest/Weakest -->
+      <div class="grid grid-2 gap-md mb-lg">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="section-title">📅 Weekly Activity</div>
+              <div class="section-subtitle">Questions answered per day</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div style="display:flex; gap:4px; margin-bottom:8px;">
+              <div style="font-size:0.7rem; color:var(--gray-400); width:30px;"></div>
+              ${['S','M','T','W','T','F','S'].map(d => `<div style="flex:1; text-align:center; font-size:0.65rem; color:var(--gray-400); font-weight:600;">${d}</div>`).join('')}
+            </div>
+            <div id="heatmap-container" style="display:flex; flex-direction:column; gap:4px;"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><div class="section-title">📊 Subject Mastery Breakdown</div></div>
+          <div class="card-body">
+            <div style="height:220px;">
+              <canvas id="bar-chart" aria-label="Topic mastery bar chart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Strongest / Weakest -->
+      <div class="grid grid-2 gap-md mb-lg">
+        <div class="card">
+          <div class="card-header"><div class="section-title">💪 Strongest Concepts</div></div>
+          <div class="card-body" id="strongest-list"></div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="section-title">🔴 Weakest Concepts</div></div>
+          <div class="card-body" id="weakest-list"></div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/demo.js"></script>
+<script src="js/engine.js"></script>
+<script src="js/api.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const isDemo = isDemoMode();
+  const session = getSession();
+  if (!session && !isDemo) { window.location.href = 'auth.html'; return; }
+  if (isDemo) showDemoBanner();
+  initMobileSidebar();
+
+  const currentDept = getSelectedDepartment();
+  const selector = document.getElementById('dept-selector');
+  if (selector) {
+    selector.value = currentDept;
+    selector.addEventListener('change', (e) => {
+      setSelectedDepartment(e.target.value);
+      location.reload();
+    });
+  }
+
+  const data = getDemoData(currentDept);
+  const { conceptProgress } = data;
+
+  document.querySelectorAll('.user-name').forEach(el => el.textContent = data.student.name || 'Student');
+  document.querySelectorAll('.user-avatar').forEach(el => el.textContent = getInitials(data.student.name));
+  
+  const deptLabelEl = document.getElementById('sidebar-dept-name');
+  if (deptLabelEl) deptLabelEl.textContent = `${currentDept} Student`;
+
+  const overall = computeOverallMastery(conceptProgress);
+  const total   = conceptProgress.reduce((a,b) => a + b.attempt_count, 0);
+  const correct = conceptProgress.reduce((a,b) => a + b.correct_count, 0);
+  const mastered = conceptProgress.filter(c => c.mastery_score >= 90).length;
+
+  document.getElementById('prog-overall').textContent  = overall + '%';
+  document.getElementById('prog-total').textContent    = total;
+  document.getElementById('prog-accuracy').textContent = (total > 0 ? Math.round(correct/total*100) : 0) + '%';
+  document.getElementById('prog-mastered').textContent = mastered;
+
+  // Radar chart
+  const radarCtx = document.getElementById('progress-radar-chart');
+  if (radarCtx) {
+    const topicMastery = computeTopicMastery(conceptProgress);
+    new Chart(radarCtx, {
+      type: 'radar',
+      data: {
+        labels: topicMastery.map(t => t.topic),
+        datasets: [{
+          label: 'Mastery %',
+          data: topicMastery.map(t => t.mastery),
+          backgroundColor: 'rgba(99,102,241,0.15)',
+          borderColor: '#6366f1',
+          borderWidth: 2,
+          pointBackgroundColor: '#6366f1',
+          pointRadius: 4,
+        }],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: { r: { min: 0, max: 100, ticks: { stepSize: 25, font: { size: 10 } } } },
+        plugins: { legend: { display: false } },
+      },
+    });
+  }
+
+  // Bar chart
+  const barCtx = document.getElementById('bar-chart');
+  if (barCtx) {
+    const topicMastery = computeTopicMastery(conceptProgress);
+    new Chart(barCtx, {
+      type: 'bar',
+      data: {
+        labels: topicMastery.map(t => t.topic),
+        datasets: [{
+          label: 'Mastery %',
+          data: topicMastery.map(t => t.mastery),
+          backgroundColor: topicMastery.map(t => t.color + 'cc'),
+          borderColor: topicMastery.map(t => t.color),
+          borderWidth: 2,
+          borderRadius: 8,
+        }],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: { min: 0, max: 100, grid: { color: '#f1f5f9' } },
+          x: { grid: { display: false } },
+        },
+        plugins: { legend: { display: false } },
+      },
+    });
+  }
+
+  // Strongest / Weakest
+  const strongest = getStrongestConcepts(conceptProgress, 5);
+  const weakest   = getWeakestConcepts(conceptProgress, 5);
+
+  function renderConceptListItem(concept) {
+    const level = getMasteryLevel(concept.mastery_score);
+    return `
+      <div style="display:flex; align-items:center; gap:10px; padding:10px 0; border-bottom:1px solid var(--gray-100);">
+        <div style="flex:1; min-width:0;">
+          <div style="font-weight:600; font-size:0.875rem; color:var(--gray-800);">${level.icon} ${escapeHtml(concept.concept)}</div>
+          <div style="font-size:0.75rem; color:var(--gray-500);">${concept.topic}</div>
+        </div>
+        <div style="width:80px;">
+          <div class="progress-bar-wrap"><div class="progress-bar-fill ${level.barClass}" style="width:${concept.mastery_score}%"></div></div>
+        </div>
+        <div style="font-weight:800; font-size:1rem; color:${level.color}; width:36px; text-align:right;">${concept.mastery_score}%</div>
+      </div>`;
+  }
+
+  document.getElementById('strongest-list').innerHTML = strongest.map(renderConceptListItem).join('');
+  document.getElementById('weakest-list').innerHTML   = weakest.map(renderConceptListItem).join('');
+});
+</script>
+</body>
+</html>

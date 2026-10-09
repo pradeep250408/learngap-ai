@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Learning Roadmap — LearnGap AI</title>
+  <meta name="description" content="Your personalized AI learning roadmap — see exactly where you are and where you need to go.">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+<div class="sidebar-overlay" aria-hidden="true"></div>
+<div class="app-shell">
+
+  <aside class="sidebar" role="navigation" aria-label="Main navigation">
+    <div class="sidebar-logo"><div class="logo-icon">🧠</div><div class="logo-text">Learn<span>Gap</span> AI</div></div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Menu</div>
+      <a href="dashboard.html" class="nav-item" data-page="dashboard"><span class="nav-icon">📊</span> Dashboard</a>
+      <a href="practice.html" class="nav-item" data-page="practice"><span class="nav-icon">🎯</span> Practice</a>
+      <a href="gaps.html" class="nav-item" data-page="gaps"><span class="nav-icon">🔍</span> Learning Gaps</a>
+      <a href="progress.html" class="nav-item" data-page="progress"><span class="nav-icon">📈</span> Progress</a>
+      <a href="roadmap.html" class="nav-item active" data-page="roadmap" aria-current="page"><span class="nav-icon">🗺️</span> Roadmap</a>
+      <a href="profile.html" class="nav-item" data-page="profile"><span class="nav-icon">👤</span> Profile</a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="sidebar-user" onclick="navigate('profile.html')" role="button" tabindex="0">
+        <div class="user-avatar"><img src="assets/images/student_avatar.png" alt="Alex Johnson Profile"></div>
+        <div class="user-info"><div class="user-name">Alex Johnson</div><div class="user-level" id="sidebar-dept-name">CSE Student</div></div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main-content" role="main">
+    <header class="topbar">
+      <button class="hamburger-btn" aria-label="Open navigation" id="hamburger-btn"><span></span><span></span><span></span></button>
+      
+      <!-- Department Selector -->
+      <div style="display:flex; align-items:center; gap:8px;">
+        <span style="font-size:0.8rem; font-weight:700; color:var(--gray-500); text-transform:uppercase; letter-spacing:0.05em;">Branch:</span>
+        <select id="dept-selector" class="form-control" style="padding:4px 28px 4px 10px; font-size:0.85rem; font-weight:700; width:auto; border-color:var(--primary-300); color:var(--primary-700); background-color:var(--primary-50);" aria-label="Select Engineering Branch">
+          <option value="CSE">Computer Science (CSE)</option>
+          <option value="ECE">Electronics & Comm (ECE)</option>
+          <option value="EEE">Electrical & Electronics (EEE)</option>
+          <option value="ME">Mechanical Engg (ME)</option>
+          <option value="CE">Civil Engg (CE)</option>
+          <option value="AIDS">AI & Data Science (AI/DS)</option>
+        </select>
+      </div>
+
+      <div class="topbar-actions" style="margin-left:auto;">
+        <a href="practice.html" class="btn btn-primary btn-sm" id="roadmap-practice-btn">🎯 Practice</a>
+      </div>
+    </header>
+
+    <div class="page-content">
+
+      <!-- Roadmap Header -->
+      <div style="margin-bottom:28px; background:linear-gradient(135deg, #ffffff, #f0f9ff); border:1px solid var(--primary-200); border-radius:16px; padding:24px 32px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:20px; box-shadow:var(--shadow-sm);">
+        <div>
+          <h2 style="margin-bottom:6px;" id="roadmap-main-title">🗺️ AI Learning Roadmap</h2>
+          <p style="color:var(--gray-600); max-width:600px;">This roadmap dynamically adjusts based on your engineering branch mastery. Target 🔴 critical areas first to maximize progress.</p>
+        </div>
+        <img src="assets/images/cs_card.png" alt="Engineering Study Roadmap" style="width:180px; height:100px; object-fit:cover; border-radius:12px; border:2px solid var(--primary-300); box-shadow:var(--shadow-md);">
+      </div>
+
+      <div style="display:grid; grid-template-columns:1fr 340px; gap:24px;" class="roadmap-main-grid">
+
+        <!-- Timeline -->
+        <div>
+          <div style="display:flex; gap:12px; margin-bottom:20px; flex-wrap:wrap;">
+            <div style="display:flex; align-items:center; gap:6px; font-size:0.8rem; color:var(--gray-600);">
+              <div style="width:12px; height:12px; border-radius:50%; background:var(--success-500);"></div> Mastered (≥90%)
+            </div>
+            <div style="display:flex; align-items:center; gap:6px; font-size:0.8rem; color:var(--gray-600);">
+              <div style="width:12px; height:12px; border-radius:50%; background:var(--warning-500);"></div> In Progress (60–89%)
+            </div>
+            <div style="display:flex; align-items:center; gap:6px; font-size:0.8rem; color:var(--gray-600);">
+              <div style="width:12px; height:12px; border-radius:50%; background:var(--danger-500);"></div> Needs Work (0–59%)
+            </div>
+          </div>
+
+          <div class="roadmap-timeline" id="roadmap-timeline" role="list" aria-label="Learning roadmap timeline"></div>
+        </div>
+
+        <!-- Sidebar -->
+        <div style="display:flex; flex-direction:column; gap:20px;">
+          <!-- Next Recommended -->
+          <div class="recommendation-card" id="roadmap-rec-card">
+            <div class="rec-label">🎯 Next Focus Target</div>
+            <div id="roadmap-rec-content"></div>
+          </div>
+
+          <!-- Progress Overview -->
+          <div class="card">
+            <div class="card-header"><div class="section-title">Branch Mastery</div></div>
+            <div class="card-body">
+              <div style="text-align:center; margin-bottom:16px;">
+                <div style="font-family:var(--font-display); font-size:3rem; font-weight:900; color:var(--primary-600);" id="roadmap-overall">0%</div>
+                <div style="font-size:0.85rem; color:var(--gray-500);">Overall Branch Score</div>
+              </div>
+              <div id="roadmap-status-breakdown"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/demo.js"></script>
+<script src="js/engine.js"></script>
+<script src="js/api.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const isDemo = isDemoMode();
+  const session = getSession();
+  if (!session && !isDemo) { window.location.href = 'auth.html'; return; }
+  if (isDemo) showDemoBanner();
+  initMobileSidebar();
+
+  const currentDept = getSelectedDepartment();
+  const selector = document.getElementById('dept-selector');
+  if (selector) {
+    selector.value = currentDept;
+    selector.addEventListener('change', (e) => {
+      setSelectedDepartment(e.target.value);
+      location.reload();
+    });
+  }
+
+  const data = getDemoData(currentDept);
+  const { conceptProgress } = data;
+
+  const deptName = DEPARTMENTS[currentDept] || currentDept;
+  document.getElementById('roadmap-main-title').textContent = `🗺️ ${deptName} Learning Roadmap`;
+  document.querySelectorAll('.user-name').forEach(el => el.textContent = data.student.name || 'Student');
+  document.querySelectorAll('.user-avatar').forEach(el => el.textContent = getInitials(data.student.name));
+  
+  const deptLabelEl = document.getElementById('sidebar-dept-name');
+  if (deptLabelEl) deptLabelEl.textContent = `${currentDept} Student`;
+
+  const overall = computeOverallMastery(conceptProgress);
+  document.getElementById('roadmap-overall').textContent = overall + '%';
+
+  const roadmap = generateRoadmap(conceptProgress);
+  renderRoadmapTimeline(roadmap, conceptProgress);
+  renderRoadmapRec(conceptProgress);
+  renderStatusBreakdown(conceptProgress);
+});
+
+function renderRoadmapTimeline(roadmap, conceptProgress) {
+  const container = document.getElementById('roadmap-timeline');
+
+  if (!roadmap.length) {
+    container.innerHTML = `<div class="empty-state" style="padding:32px;"><p>No roadmap items found for this department.</p></div>`;
+    return;
+  }
+
+  container.innerHTML = roadmap.map(item => {
+    const conceptCards = item.concepts.map(c => {
+      const level = getMasteryLevel(c.mastery_score);
+      return `
+        <div style="display:flex; align-items:center; gap:8px; padding:6px 10px; background:var(--gray-50); border-radius:8px; border:1px solid var(--border);">
+          <span style="font-size:0.75rem;">${level.icon}</span>
+          <span style="font-size:0.8rem; font-weight:600; color:var(--gray-800); flex:1;">${escapeHtml(c.concept)}</span>
+          <span style="font-size:0.8rem; font-weight:700; color:${level.color};">${c.mastery_score}%</span>
+        </div>`;
+    }).join('');
+
+    return `
+      <div class="roadmap-item" role="listitem">
+        <div class="roadmap-node ${item.nodeClass}">${item.icon}</div>
+        <div class="roadmap-content">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; flex-wrap:wrap; gap:8px;">
+            <div>
+              <div class="roadmap-title">${item.topic}</div>
+              <div class="roadmap-sub">${item.concepts.length} concepts</div>
+            </div>
+            <div class="roadmap-score" style="color:${item.mastery > 75 ? 'var(--success-600)' : item.mastery > 50 ? 'var(--warning-600)' : 'var(--danger-600)'};">${item.mastery}%</div>
+          </div>
+          <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(200px, 1fr)); gap:6px;">
+            ${conceptCards}
+          </div>
+          ${item.status !== 'mastered' ? `
+            <div style="margin-top:10px;">
+              <a href="practice.html${isDemoMode() ? '?demo=true' : ''}" class="btn btn-sm ${item.status === 'needs' ? 'btn-danger' : 'btn-primary'}" style="font-size:0.8rem;">
+                Continue Practice →
+              </a>
+            </div>` : ''}
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function renderRoadmapRec(conceptProgress) {
+  const rec = generateRecommendations(conceptProgress)[0];
+  const container = document.getElementById('roadmap-rec-content');
+  if (!rec) return;
+  container.innerHTML = `
+    <div class="rec-concept">${escapeHtml(rec.concept)}</div>
+    <div class="rec-accuracy">Accuracy: ${rec.accuracy}%</div>
+    <p style="font-size:0.85rem; color:rgba(255,255,255,0.8); margin-bottom:16px;">${escapeHtml(rec.reason)}</p>
+    <button class="rec-btn" onclick="navigate('practice.html${isDemoMode() ? '?demo=true' : ''}')">Start Practice →</button>`;
+}
+
+function renderStatusBreakdown(conceptProgress) {
+  const breakdown = [
+    { label: 'Mastered',      count: conceptProgress.filter(c => c.mastery_score >= 90).length, color: 'var(--success-500)' },
+    { label: 'Strong',        count: conceptProgress.filter(c => c.mastery_score >= 75 && c.mastery_score < 90).length, color: 'var(--info-500)' },
+    { label: 'Developing',    count: conceptProgress.filter(c => c.mastery_score >= 60 && c.mastery_score < 75).length, color: 'var(--warning-500)' },
+    { label: 'Needs Practice',count: conceptProgress.filter(c => c.mastery_score >= 40 && c.mastery_score < 60).length, color: 'var(--needs-color)' },
+    { label: 'Critical Gap',  count: conceptProgress.filter(c => c.mastery_score < 40).length, color: 'var(--critical-color)' },
+  ];
+
+  document.getElementById('roadmap-status-breakdown').innerHTML = breakdown.map(b => `
+    <div style="display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid var(--gray-100);">
+      <div style="width:8px; height:8px; border-radius:50%; background:${b.color}; flex-shrink:0;"></div>
+      <div style="flex:1; font-size:0.85rem; color:var(--gray-700);">${b.label}</div>
+      <div style="font-weight:700; font-size:0.9rem; color:var(--gray-900);">${b.count}</div>
+    </div>`).join('');
+}
+</script>
+</body>
+</html>

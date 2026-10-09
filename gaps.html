@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Learning Gaps — LearnGap AI</title>
+  <meta name="description" content="See all your learning gaps, concept mastery scores, and what to focus on next.">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+<div class="sidebar-overlay" aria-hidden="true"></div>
+<div class="app-shell">
+
+  <aside class="sidebar" role="navigation" aria-label="Main navigation">
+    <div class="sidebar-logo"><div class="logo-icon">🧠</div><div class="logo-text">Learn<span>Gap</span> AI</div></div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Menu</div>
+      <a href="dashboard.html" class="nav-item" data-page="dashboard"><span class="nav-icon">📊</span> Dashboard</a>
+      <a href="practice.html" class="nav-item" data-page="practice"><span class="nav-icon">🎯</span> Practice</a>
+      <a href="gaps.html" class="nav-item active" data-page="gaps" aria-current="page"><span class="nav-icon">🔍</span> Learning Gaps</a>
+      <a href="progress.html" class="nav-item" data-page="progress"><span class="nav-icon">📈</span> Progress</a>
+      <a href="roadmap.html" class="nav-item" data-page="roadmap"><span class="nav-icon">🗺️</span> Roadmap</a>
+      <a href="profile.html" class="nav-item" data-page="profile"><span class="nav-icon">👤</span> Profile</a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="sidebar-user" onclick="navigate('profile.html')" role="button" tabindex="0">
+        <div class="user-avatar"><img src="assets/images/student_avatar.png" alt="Alex Johnson Profile"></div>
+        <div class="user-info"><div class="user-name">Alex Johnson</div><div class="user-level" id="sidebar-dept-name">CSE Student</div></div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main-content" role="main">
+    <header class="topbar">
+      <button class="hamburger-btn" aria-label="Open navigation" id="hamburger-btn"><span></span><span></span><span></span></button>
+      
+      <!-- Department Selector -->
+      <div style="display:flex; align-items:center; gap:8px;">
+        <span style="font-size:0.8rem; font-weight:700; color:var(--gray-500); text-transform:uppercase; letter-spacing:0.05em;">Branch:</span>
+        <select id="dept-selector" class="form-control" style="padding:4px 28px 4px 10px; font-size:0.85rem; font-weight:700; width:auto; border-color:var(--primary-300); color:var(--primary-700); background-color:var(--primary-50);" aria-label="Select Engineering Branch">
+          <option value="CSE">Computer Science (CSE)</option>
+          <option value="ECE">Electronics & Comm (ECE)</option>
+          <option value="EEE">Electrical & Electronics (EEE)</option>
+          <option value="ME">Mechanical Engg (ME)</option>
+          <option value="CE">Civil Engg (CE)</option>
+          <option value="AIDS">AI & Data Science (AI/DS)</option>
+        </select>
+      </div>
+
+      <div class="topbar-actions" style="margin-left:auto;">
+        <a href="practice.html" class="btn btn-primary btn-sm" id="start-targeted-btn">🎯 Start Targeted Practice</a>
+      </div>
+    </header>
+
+    <div class="page-content">
+
+      <!-- Gap Report Header -->
+      <div class="card mb-lg" style="background:linear-gradient(135deg,var(--primary-600),var(--accent-600)); border:none; color:#fff; overflow:visible;">
+        <div class="card-body" style="padding:28px;">
+          <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px;">
+            <div>
+              <div style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.1em; color:rgba(255,255,255,0.7); margin-bottom:6px;">DEPARTMENT LEARNING GAP REPORT</div>
+              <h2 style="color:#fff; margin-bottom:6px;" id="gap-report-title">Learning Gap Analysis</h2>
+              <p style="color:rgba(255,255,255,0.8); margin:0;" id="gap-report-sub">Based on performance in engineering concepts</p>
+            </div>
+            <div style="display:flex; gap:24px;">
+              <div style="text-align:center;">
+                <div style="font-family:var(--font-display); font-size:2rem; font-weight:800; color:#fff;" id="critical-count">0</div>
+                <div style="font-size:0.75rem; color:rgba(255,255,255,0.7);">Critical Gaps</div>
+              </div>
+              <div style="text-align:center;">
+                <div style="font-family:var(--font-display); font-size:2rem; font-weight:800; color:#fff;" id="needs-count-gaps">0</div>
+                <div style="font-size:0.75rem; color:rgba(255,255,255,0.7);">Need Practice</div>
+              </div>
+              <div style="text-align:center;">
+                <div style="font-family:var(--font-display); font-size:2rem; font-weight:800; color:#fff;" id="mastered-count-gaps">0</div>
+                <div style="font-size:0.75rem; color:rgba(255,255,255,0.7);">Mastered</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="gaps-layout">
+        <div>
+
+          <!-- Filter Chips -->
+          <div class="chip-group mb-lg" role="group" aria-label="Filter by mastery level">
+            <button class="chip active" data-filter="all" id="filter-all" onclick="filterGaps('all')">All Concepts</button>
+            <button class="chip" data-filter="critical" id="filter-critical" onclick="filterGaps('critical')">🔴 Critical</button>
+            <button class="chip" data-filter="needs" id="filter-needs" onclick="filterGaps('needs')">⚠️ Needs Practice</button>
+            <button class="chip" data-filter="developing" id="filter-developing" onclick="filterGaps('developing')">📈 Developing</button>
+            <button class="chip" data-filter="strong" id="filter-strong" onclick="filterGaps('strong')">💪 Strong</button>
+            <button class="chip" data-filter="mastered" id="filter-mastered" onclick="filterGaps('mastered')">✅ Mastered</button>
+          </div>
+
+          <!-- Concept List -->
+          <div id="gap-cards-list" class="gaps-list" role="list" aria-label="Concept mastery list">
+            <div class="skeleton" style="height:90px; border-radius:12px; margin-bottom:12px;"></div>
+            <div class="skeleton" style="height:90px; border-radius:12px; margin-bottom:12px;"></div>
+            <div class="skeleton" style="height:90px; border-radius:12px;"></div>
+          </div>
+
+        </div>
+
+        <div>
+          <!-- Gap Distribution Chart -->
+          <div class="card mb-lg" style="position:sticky; top:84px;">
+            <div class="card-header"><div class="section-title">Gap Distribution</div></div>
+            <div class="card-body">
+              <div style="height:220px; display:flex; align-items:center; justify-content:center;">
+                <canvas id="gap-donut-chart" aria-label="Gap distribution donut chart"></canvas>
+              </div>
+              <div id="gap-legend" style="margin-top:12px;"></div>
+            </div>
+            <div class="card-footer">
+              <a href="practice.html" class="btn btn-primary w-full" id="practice-weakest-btn" style="text-align:center; justify-content:center;">
+                🎯 Practice Weakest Concepts
+              </a>
+            </div>
+          </div>
+
+          <!-- Top Recommendations -->
+          <div class="card">
+            <div class="card-header"><div class="section-title">🎯 Focus Areas</div></div>
+            <div class="card-body" id="focus-areas-list">
+              <div class="loading-overlay" style="padding:20px;">
+                <div class="loading-spinner"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<!-- Questions & Answers Modal -->
+<div class="modal-overlay" id="qa-modal" role="dialog" aria-modal="true" aria-labelledby="qa-modal-title">
+  <div class="modal-dialog" style="max-width:720px; width:90%;">
+    <div class="modal-header">
+      <div>
+        <div style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--primary-600); font-weight:700;">CONCEPT QUESTIONS & ANSWERS</div>
+        <h3 class="modal-title" id="qa-modal-title">Questions & Answers</h3>
+      </div>
+      <button class="modal-close" onclick="closeModal('qa-modal')" aria-label="Close modal">✕</button>
+    </div>
+    <div class="modal-body" id="qa-modal-body" style="max-height:70vh; overflow-y:auto; padding:20px;">
+      <!-- Q&As dynamically populated here -->
+    </div>
+  </div>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/demo.js"></script>
+<script src="js/engine.js"></script>
+<script src="js/api.js"></script>
+<script>
+let donutChartInstance = null;
+
+document.addEventListener('DOMContentLoaded', async () => {
+  const isDemo = isDemoMode();
+  const session = getSession();
+  if (!session && !isDemo) { window.location.href = 'auth.html'; return; }
+  if (isDemo) showDemoBanner();
+  initMobileSidebar();
+
+  const currentDept = getSelectedDepartment();
+  const selector = document.getElementById('dept-selector');
+  if (selector) {
+    selector.value = currentDept;
+    selector.addEventListener('change', (e) => {
+      setSelectedDepartment(e.target.value);
+      location.reload();
+    });
+  }
+
+  const data = getDemoData(currentDept);
+  const { conceptProgress } = data;
+
+  const deptFullName = DEPARTMENTS[currentDept] || currentDept;
+  document.getElementById('gap-report-title').textContent = `${deptFullName} Gap Analysis`;
+
+  const critical  = conceptProgress.filter(c => c.mastery_score < 40).length;
+  const needs     = conceptProgress.filter(c => c.mastery_score >= 40 && c.mastery_score < 60).length;
+  const mastered  = conceptProgress.filter(c => c.mastery_score >= 90).length;
+  const total     = conceptProgress.reduce((a, b) => a + b.attempt_count, 0);
+
+  document.getElementById('critical-count').textContent = critical;
+  document.getElementById('needs-count-gaps').textContent = needs;
+  document.getElementById('mastered-count-gaps').textContent = mastered;
+  document.getElementById('gap-report-sub').textContent = `Tracking ${conceptProgress.length} concepts in ${currentDept}`;
+
+  renderGapCards(conceptProgress);
+  renderDonutChart(conceptProgress);
+  renderFocusAreas(conceptProgress);
+
+  document.querySelectorAll('.user-name').forEach(el => el.textContent = data.student.name || 'Student');
+  document.querySelectorAll('.user-avatar').forEach(el => el.textContent = getInitials(data.student.name));
+  
+  const deptLabelEl = document.getElementById('sidebar-dept-name');
+  if (deptLabelEl) deptLabelEl.textContent = `${currentDept} Student`;
+});
+
+function renderGapCards(concepts) {
+  const container = document.getElementById('gap-cards-list');
+  const sorted = [...concepts].sort((a, b) => a.mastery_score - b.mastery_score);
+
+  if (!sorted.length) {
+    container.innerHTML = `<div class="empty-state" style="padding:32px;"><p>No concepts found for this department.</p></div>`;
+    return;
+  }
+
+  container.innerHTML = sorted.map(concept => {
+    const level = getMasteryLevel(concept.mastery_score);
+    const statusClass = level.key.toLowerCase();
+    return `
+      <div class="gap-card ${statusClass}" role="listitem" data-status="${statusClass}">
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; flex-wrap:wrap; gap:8px;">
+          <div>
+            <div style="font-weight:700; color:var(--gray-900); margin-bottom:2px;">${level.icon} ${escapeHtml(concept.concept)}</div>
+            <div style="font-size:0.8rem; color:var(--gray-500);">${escapeHtml(concept.topic)} • ${concept.attempt_count} attempts</div>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="font-family:var(--font-display); font-size:1.4rem; font-weight:800; color:${level.color};">${concept.mastery_score}%</span>
+            <span class="badge ${level.badgeClass}">${level.label}</span>
+          </div>
+        </div>
+        <div class="progress-bar-wrap">
+          <div class="progress-bar-fill ${level.barClass}" style="width:${concept.mastery_score}%"></div>
+        </div>
+        <div class="gap-card-actions" style="display:flex; align-items:center; justify-content:space-between; margin-top:12px; flex-wrap:wrap; gap:8px; font-size:0.8rem; color:var(--gray-500);">
+          <span>Accuracy: ${concept.accuracy}% &nbsp;|&nbsp; ${concept.correct_count}/${concept.attempt_count} correct</span>
+          <div style="display:flex; gap:8px;">
+            <button class="btn btn-secondary btn-sm" style="padding:4px 10px; font-size:0.8rem;" onclick="openConceptQAModal('${escapeHtml(concept.concept)}')">📖 View Q&As</button>
+            <a href="practice.html${isDemoMode() ? '?demo=true' : ''}" class="btn btn-primary btn-sm" style="padding:4px 10px; font-size:0.8rem;">🎯 Practice →</a>
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function openConceptQAModal(conceptName) {
+  const currentDept = getSelectedDepartment();
+  const modalTitle = document.getElementById('qa-modal-title');
+  const modalBody  = document.getElementById('qa-modal-body');
+
+  modalTitle.textContent = `${conceptName} — Questions & Answers`;
+  
+  const qas = getQuestionsAndAnswersForConcept(currentDept, conceptName);
+
+  if (!qas || !qas.length) {
+    modalBody.innerHTML = `
+      <div style="text-align:center; padding:32px; color:var(--gray-500);">
+        <div style="font-size:2.5rem; margin-bottom:10px;">📚</div>
+        <p style="margin-bottom:16px;">Questions and step-by-step solutions for <strong>${escapeHtml(conceptName)}</strong> are being loaded.</p>
+        <a href="practice.html${isDemoMode() ? '?demo=true' : ''}" class="btn btn-primary btn-sm">🎯 Launch Practice Quiz</a>
+      </div>`;
+  } else {
+    modalBody.innerHTML = qas.map((q, idx) => `
+      <div class="qa-card mb-md">
+        <div class="qa-card-header">
+          <div class="qa-question-title">Q${idx + 1}. ${escapeHtml(q.question)}</div>
+          <span class="badge ${DIFFICULTY_LEVELS[q.difficulty]?.badgeClass || 'badge-easy'}">${DIFFICULTY_LEVELS[q.difficulty]?.label || 'Easy'}</span>
+        </div>
+        <div class="qa-options-list">
+          ${q.options.map((opt, i) => {
+            const letter = ['A','B','C','D'][i];
+            const isCorrect = letter === q.correctAnswer;
+            return `
+              <div class="qa-option-item ${isCorrect ? 'is-correct' : ''}">
+                <span style="font-weight:700; font-size:0.8rem;">${letter}.</span>
+                <span>${escapeHtml(opt)}</span>
+                ${isCorrect ? '<span style="margin-left:auto;">✓ Correct</span>' : ''}
+              </div>`;
+          }).join('')}
+        </div>
+        <div class="qa-solution-box">
+          <div class="qa-solution-title">💡 Detailed Solution & Explanation</div>
+          <div class="qa-solution-text">${escapeHtml(q.explanation)}</div>
+          ${q.keyTakeaway ? `<div class="qa-key-takeaway">🔑 <strong>Key Concept:</strong> ${escapeHtml(q.keyTakeaway)}</div>` : ''}
+        </div>
+      </div>`).join('');
+  }
+
+  openModal('qa-modal');
+}
+
+function filterGaps(filter) {
+  document.querySelectorAll('.chip').forEach(c => c.classList.toggle('active', c.dataset.filter === filter));
+  document.querySelectorAll('.gap-card').forEach(card => {
+    const visible = filter === 'all' || card.dataset.status === filter;
+    card.style.display = visible ? 'block' : 'none';
+  });
+}
+
+function renderDonutChart(concepts) {
+  const counts = {
+    mastered:   concepts.filter(c => c.mastery_score >= 90).length,
+    strong:     concepts.filter(c => c.mastery_score >= 75 && c.mastery_score < 90).length,
+    developing: concepts.filter(c => c.mastery_score >= 60 && c.mastery_score < 75).length,
+    needs:      concepts.filter(c => c.mastery_score >= 40 && c.mastery_score < 60).length,
+    critical:   concepts.filter(c => c.mastery_score < 40).length,
+  };
+
+  const ctx = document.getElementById('gap-donut-chart');
+  if (!ctx) return;
+
+  if (donutChartInstance) donutChartInstance.destroy();
+
+  donutChartInstance = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: ['Mastered', 'Strong', 'Developing', 'Needs Practice', 'Critical'],
+      datasets: [{
+        data: Object.values(counts),
+        backgroundColor: ['#22c55e', '#3b82f6', '#eab308', '#f97316', '#ef4444'],
+        borderWidth: 3,
+        borderColor: '#fff',
+      }],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      cutout: '65%',
+      plugins: { legend: { display: false } },
+    },
+  });
+
+  const legendColors = ['#22c55e', '#3b82f6', '#eab308', '#f97316', '#ef4444'];
+  const legendLabels = ['Mastered', 'Strong', 'Developing', 'Needs Practice', 'Critical'];
+  document.getElementById('gap-legend').innerHTML = legendLabels.map((label, i) => `
+    <div style="display:flex; align-items:center; justify-content:space-between; padding:4px 0; font-size:0.8rem;">
+      <div style="display:flex; align-items:center; gap:6px;">
+        <div style="width:10px; height:10px; border-radius:50%; background:${legendColors[i]};"></div>
+        <span style="color:var(--gray-700);">${label}</span>
+      </div>
+      <span style="font-weight:700; color:var(--gray-800);">${Object.values(counts)[i]}</span>
+    </div>`).join('');
+}
+
+function renderFocusAreas(concepts) {
+  const recs = generateRecommendations(concepts).slice(0, 3);
+  const container = document.getElementById('focus-areas-list');
+  if (!recs.length) {
+    container.innerHTML = `<div style="padding:16px; font-size:0.85rem; color:var(--gray-500);">No focus areas needed.</div>`;
+    return;
+  }
+  container.innerHTML = recs.map((rec, i) => `
+    <div style="padding:12px; background:${i === 0 ? 'var(--primary-50)' : 'var(--gray-50)'}; border-radius:10px; margin-bottom:10px; border:1px solid ${i === 0 ? 'var(--primary-200)' : 'var(--border)'};">
+      <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+        <span style="width:20px; height:20px; background:${i === 0 ? 'var(--primary-500)' : 'var(--gray-300)'}; color:#fff; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.7rem; font-weight:700;">${i + 1}</span>
+        <span style="font-weight:700; font-size:0.9rem; color:var(--gray-900);">${escapeHtml(rec.concept)}</span>
+        <span class="badge ${rec.level.badgeClass}" style="margin-left:auto;">${rec.accuracy}%</span>
+      </div>
+      <p style="font-size:0.8rem; color:var(--gray-600); margin:0 0 8px;">${escapeHtml(rec.reason)}</p>
+      <div style="display:flex; gap:6px;">
+        <button class="btn btn-sm btn-ghost" onclick="openConceptQAModal('${escapeHtml(rec.concept)}')" style="font-size:0.78rem;">📖 Q&As</button>
+        <a href="practice.html${isDemoMode() ? '?demo=true' : ''}" class="btn btn-sm ${i === 0 ? 'btn-primary' : 'btn-secondary'}" style="font-size:0.78rem;">Practice now →</a>
+      </div>
+    </div>`).join('');
+}
+</script>
+</body>
+</html>
+

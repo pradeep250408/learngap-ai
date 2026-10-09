@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student Q&amp;A – LearnGap AI</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    /* Page‑specific overrides */
+    .qa-container { max-width: 800px; margin: 0 auto; padding: 40px 20px; }
+    .qa-section { margin-bottom: 30px; }
+    .qa-question { cursor: pointer; padding: 14px 20px; background: var(--primary-50); border-radius: var(--card-radius); display: flex; justify-content: space-between; align-items: center; transition: background var(--transition); }
+    .qa-question:hover { background: var(--primary-100); }
+    .qa-answer { display: none; padding: 16px 20px; background: var(--bg-card); border-left: 4px solid var(--primary-300); border-radius: var(--card-radius); margin-top: 8px; }
+    .qa-icon { transition: transform var(--transition); }
+    .qa-question.active .qa-icon { transform: rotate(180deg); }
+  </style>
+</head>
+<body class="landing-page">
+  <!-- Navbar (reuse existing) -->
+  <nav class="landing-nav" role="navigation" aria-label="Main navigation">
+    <a href="index.html" class="nav-logo" aria-label="LearnGap AI Home">
+      <div class="nav-logo-icon">🧠</div>
+      <span>LearnGap <span style="color:var(--primary-600)">AI</span></span>
+    </a>
+    <div class="nav-links" role="menubar">
+      <a href="dashboard.html" class="nav-link" role="menuitem">Dashboard</a>
+      <a href="gaps.html" class="nav-link" role="menuitem">Gaps</a>
+      <a href="practice.html" class="nav-link" role="menuitem">Practice</a>
+    </div>
+    <div class="nav-actions">
+      <a href="auth.html" class="btn btn-ghost btn-sm" id="nav-login-btn">Log in</a>
+    </div>
+  </nav>
+
+  <main class="main-content">
+    <section class="qa-container">
+      <h1 class="section-title" style="margin-bottom:24px;">Frequently Asked Questions</h1>
+
+      <!-- Q&A Items -->
+      <div class="qa-section" id="qa-list">
+        <!-- Example entry – duplicate for more -->
+        <div class="qa-item">
+          <div class="qa-question" data-index="0">
+            <span>How does the adaptive algorithm work?</span>
+            <span class="qa-icon">▼</span>
+          </div>
+          <div class="qa-answer">
+            <p>The algorithm analyses each answer you submit, assigns a mastery score per concept, then selects the next question that targets the concepts with the lowest scores. It continuously updates in real‑time, focusing on the gaps that matter most.</p>
+          </div>
+        </div>
+        <div class="qa-item">
+          <div class="qa-question" data-index="1">
+            <span>Can I export my progress?</span>
+            <span class="qa-icon">▼</span>
+          </div>
+          <div class="qa-answer">
+            <p>Yes! Open the <a href="progress.html">Progress</a> page and click the "Export CSV" button. A file with your mastery scores, answered questions, and timestamps will be downloaded.</p>
+          </div>
+        </div>
+        <div class="qa-item">
+          <div class="qa-question" data-index="2">
+            <span>Is there a mobile app?</span>
+            <span class="qa-icon">▼</span>
+          </div>
+          <div class="qa-answer">
+            <p>We are currently building a responsive web app that works on any device. A native mobile app is on the roadmap for next quarter.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Simple accordion logic for Q&A items
+    document.querySelectorAll('.qa-question').forEach(q => {
+      q.addEventListener('click', () => {
+        const answer = q.parentElement.querySelector('.qa-answer');
+        const isOpen = q.classList.toggle('active');
+        if (isOpen) {
+          answer.style.display = 'block';
+        } else {
+          answer.style.display = 'none';
+        }
+      });
+    });
+  </script>
+</body>
+</html>

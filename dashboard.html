@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — LearnGap AI</title>
+  <meta name="description" content="Your personalized learning dashboard — track mastery, detect gaps, and get AI-powered recommendations.">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+<div class="sidebar-overlay" aria-hidden="true"></div>
+<div class="app-shell">
+
+  <!-- Sidebar -->
+  <aside class="sidebar" role="navigation" aria-label="Main navigation">
+    <div class="sidebar-logo">
+      <div class="logo-icon">🧠</div>
+      <div class="logo-text">Learn<span>Gap</span> AI</div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Menu</div>
+      <a href="dashboard.html" class="nav-item active" data-page="dashboard" aria-current="page">
+        <span class="nav-icon">📊</span> Dashboard
+      </a>
+      <a href="practice.html" class="nav-item" data-page="practice">
+        <span class="nav-icon">🎯</span> Practice
+      </a>
+      <a href="gaps.html" class="nav-item" data-page="gaps">
+        <span class="nav-icon">🔍</span> Learning Gaps
+      </a>
+      <a href="progress.html" class="nav-item" data-page="progress">
+        <span class="nav-icon">📈</span> Progress
+      </a>
+      <a href="roadmap.html" class="nav-item" data-page="roadmap">
+        <span class="nav-icon">🗺️</span> Roadmap
+      </a>
+      <a href="profile.html" class="nav-item" data-page="profile">
+        <span class="nav-icon">👤</span> Profile
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="sidebar-user" onclick="navigate('profile.html')" role="button" tabindex="0" aria-label="View profile">
+        <div class="user-avatar">
+          <img src="assets/images/student_avatar.png" alt="Alex Johnson Profile">
+        </div>
+        <div class="user-info">
+          <div class="user-name">Alex Johnson</div>
+          <div class="user-level" id="sidebar-dept-name">CSE Student</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content" role="main">
+    <header class="topbar">
+      <button class="hamburger-btn" aria-label="Open navigation" id="hamburger-btn">
+        <span></span><span></span><span></span>
+      </button>
+      
+      <!-- Department Switcher -->
+      <div style="display:flex; align-items:center; gap:8px;">
+        <span style="font-size:0.8rem; font-weight:700; color:var(--gray-500); text-transform:uppercase; letter-spacing:0.05em;">Branch:</span>
+        <select id="dept-selector" class="form-control" style="padding:5px 32px 5px 12px; font-size:0.85rem; font-weight:700; width:auto; border-color:var(--primary-300); color:var(--primary-700); background-color:var(--primary-50); border-radius:10px;" aria-label="Select Engineering Branch">
+          <option value="CSE">Computer Science (CSE)</option>
+          <option value="ECE">Electronics & Comm (ECE)</option>
+          <option value="EEE">Electrical & Electronics (EEE)</option>
+          <option value="ME">Mechanical Engg (ME)</option>
+          <option value="CE">Civil Engg (CE)</option>
+          <option value="AIDS">AI & Data Science (AI/DS)</option>
+        </select>
+      </div>
+
+      <div class="topbar-actions" style="margin-left:auto;">
+        <div class="streak-display" id="streak-display" aria-label="Learning streak">
+          <span class="streak-fire">🔥</span><span>7 day streak</span>
+        </div>
+        <a href="practice.html" class="btn btn-primary btn-sm" id="topbar-practice-btn">
+          🎯 Practice Now
+        </a>
+      </div>
+    </header>
+
+    <div class="page-content">
+
+      <!-- Greeting -->
+      <div class="greeting-section">
+        <div class="greeting-content-left">
+          <div class="greeting-avatar-large">
+            <img src="assets/images/student_avatar.png" alt="Student avatar">
+          </div>
+          <div class="greeting-text">
+            <h1 id="greeting-text">Good evening, Alex 👋</h1>
+            <p id="greeting-sub">Let's strengthen your weakest concepts in Computer Science today.</p>
+          </div>
+        </div>
+        <div class="greeting-actions">
+          <a href="student_qa.html" class="btn btn-secondary" id="study-qas-btn">📖 View Q&As</a>
+          <a href="practice.html" class="btn btn-primary" id="start-practice-greeting-btn">Start Adaptive Practice →</a>
+        </div>
+      </div>
+
+      <!-- Improvement Alert -->
+      <div class="improvement-alert mb-lg" id="improvement-alert" style="display:none;" role="alert"></div>
+
+      <!-- Stats Grid -->
+      <div class="stats-grid stagger-children mb-lg">
+        <div class="metric-card animate-fade-up">
+          <div class="metric-icon icon-indigo">🧠</div>
+          <div class="metric-body">
+            <div class="metric-label">Overall Mastery</div>
+            <div class="metric-value" id="overall-mastery">0%</div>
+            <div class="metric-delta up">↑ +8% this week</div>
+          </div>
+        </div>
+        <div class="metric-card animate-fade-up">
+          <div class="metric-icon icon-blue">📝</div>
+          <div class="metric-body">
+            <div class="metric-label">Questions Answered</div>
+            <div class="metric-value" id="questions-count">0</div>
+            <div class="metric-delta up">↑ +23 today</div>
+          </div>
+        </div>
+        <div class="metric-card animate-fade-up">
+          <div class="metric-icon icon-green">✅</div>
+          <div class="metric-body">
+            <div class="metric-label">Accuracy</div>
+            <div class="metric-value" id="accuracy-val">0%</div>
+            <div class="metric-delta up">↑ +3% from last session</div>
+          </div>
+        </div>
+        <div class="metric-card animate-fade-up">
+          <div class="metric-icon icon-orange">🔥</div>
+          <div class="metric-body">
+            <div class="metric-label">Learning Streak</div>
+            <div class="metric-value" id="streak-val">0</div>
+            <div class="metric-delta" style="color:var(--warning-600)">days in a row 🔥</div>
+          </div>
+        </div>
+        <div class="metric-card animate-fade-up">
+          <div class="metric-icon icon-green">⭐</div>
+          <div class="metric-body">
+            <div class="metric-label">Concepts Mastered</div>
+            <div class="metric-value" id="mastered-count">0</div>
+            <div class="metric-delta" style="color:var(--success-600)">in branch</div>
+          </div>
+        </div>
+        <div class="metric-card animate-fade-up">
+          <div class="metric-icon icon-red">⚠️</div>
+          <div class="metric-body">
+            <div class="metric-label">Need Practice</div>
+            <div class="metric-value" id="needs-count">0</div>
+            <div class="metric-delta" style="color:var(--danger-600)">concepts below 60%</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dashboard Grid -->
+      <div class="dashboard-grid">
+        <div class="dashboard-left">
+
+          <!-- Mastery Trend -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="section-title">Mastery Trend</div>
+                <div class="section-subtitle">Branch mastery performance analysis</div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="chart-wrapper" style="height:200px;">
+                <canvas id="trend-chart" aria-label="Mastery trend line chart"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- Learning Gaps -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="section-title">🔍 Department Learning Gaps</div>
+                <div class="section-subtitle">Concepts ranked by urgency</div>
+              </div>
+              <a href="gaps.html" class="btn btn-ghost btn-sm" id="see-all-gaps-btn">See all →</a>
+            </div>
+            <div class="card-body" id="gap-list">
+              <div class="skeleton" style="height:50px; margin-bottom:10px; border-radius:8px;"></div>
+              <div class="skeleton" style="height:50px; margin-bottom:10px; border-radius:8px;"></div>
+              <div class="skeleton" style="height:50px; border-radius:8px;"></div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="dashboard-right">
+
+          <!-- Radar Chart -->
+          <div class="card">
+            <div class="card-header">
+              <div class="section-title">Subject Mastery</div>
+            </div>
+            <div class="card-body">
+              <div class="mastery-chart-container">
+                <canvas id="radar-chart" aria-label="Topic mastery radar chart"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- AI Recommendation -->
+          <div id="recommendation-card" class="recommendation-card">
+            <div class="loading-overlay" style="padding:24px;">
+              <div class="loading-spinner"></div>
+              <p class="loading-text">Building your recommendation...</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Bottom Row -->
+      <div class="grid grid-2 gap-md">
+        <div class="card">
+          <div class="card-header">
+            <div class="section-title">Recent Activity</div>
+          </div>
+          <div class="card-body" id="activity-list"></div>
+          <div class="card-footer">
+            <a href="progress.html" class="btn btn-ghost btn-sm" id="view-full-history-btn">View full progress →</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="section-title">🗺️ Subject Roadmap</div>
+          </div>
+          <div class="card-body" id="roadmap-summary"></div>
+          <div class="card-footer">
+            <a href="roadmap.html" class="btn btn-ghost btn-sm" id="view-roadmap-btn">View full roadmap →</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/demo.js"></script>
+<script src="js/engine.js"></script>
+<script src="js/api.js"></script>
+<script src="js/dashboard.js"></script>
+<script>
+  // Department Selector Change Listener
+  document.addEventListener('DOMContentLoaded', () => {
+    const selector = document.getElementById('dept-selector');
+    if (selector) {
+      selector.value = getSelectedDepartment();
+      selector.addEventListener('change', (e) => {
+        const newDept = e.target.value;
+        setSelectedDepartment(newDept);
+        location.reload();
+      });
+    }
+  });
+</script>
+</body>
+</html>

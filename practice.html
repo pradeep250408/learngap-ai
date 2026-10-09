@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Practice — LearnGap AI</title>
+  <meta name="description" content="Adaptive practice quiz — questions tailored to your learning gaps.">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/quiz.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+<div class="sidebar-overlay" aria-hidden="true"></div>
+<div class="app-shell">
+
+  <!-- Sidebar -->
+  <aside class="sidebar" role="navigation" aria-label="Main navigation">
+    <div class="sidebar-logo">
+      <div class="logo-icon">🧠</div>
+      <div class="logo-text">Learn<span>Gap</span> AI</div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Menu</div>
+      <a href="dashboard.html" class="nav-item" data-page="dashboard"><span class="nav-icon">📊</span> Dashboard</a>
+      <a href="practice.html" class="nav-item active" data-page="practice" aria-current="page"><span class="nav-icon">🎯</span> Practice</a>
+      <a href="gaps.html" class="nav-item" data-page="gaps"><span class="nav-icon">🔍</span> Learning Gaps</a>
+      <a href="progress.html" class="nav-item" data-page="progress"><span class="nav-icon">📈</span> Progress</a>
+      <a href="roadmap.html" class="nav-item" data-page="roadmap"><span class="nav-icon">🗺️</span> Roadmap</a>
+      <a href="profile.html" class="nav-item" data-page="profile"><span class="nav-icon">👤</span> Profile</a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="sidebar-user" onclick="navigate('profile.html')" role="button" tabindex="0">
+        <div class="user-avatar"><img src="assets/images/student_avatar.png" alt="Alex Johnson Profile"></div>
+        <div class="user-info">
+          <div class="user-name">Alex Johnson</div>
+          <div class="user-level" id="sidebar-dept-name">CSE Student</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="main-content" role="main">
+    <header class="topbar">
+      <button class="hamburger-btn" aria-label="Open navigation" id="hamburger-btn">
+        <span></span><span></span><span></span>
+      </button>
+
+      <!-- Department Selector -->
+      <div style="display:flex; align-items:center; gap:8px;">
+        <span style="font-size:0.8rem; font-weight:700; color:var(--gray-500); text-transform:uppercase; letter-spacing:0.05em;">Branch:</span>
+        <select id="dept-selector" class="form-control" style="padding:4px 28px 4px 10px; font-size:0.85rem; font-weight:700; width:auto; border-color:var(--primary-300); color:var(--primary-700); background-color:var(--primary-50);" aria-label="Select Engineering Branch">
+          <option value="CSE">Computer Science (CSE)</option>
+          <option value="ECE">Electronics & Comm (ECE)</option>
+          <option value="EEE">Electrical & Electronics (EEE)</option>
+          <option value="ME">Mechanical Engg (ME)</option>
+          <option value="CE">Civil Engg (CE)</option>
+          <option value="AIDS">AI & Data Science (AI/DS)</option>
+        </select>
+      </div>
+
+      <div class="topbar-actions" style="margin-left:auto;">
+        <div class="quiz-timer" id="quiz-timer" aria-label="Question timer" aria-live="polite">⏱ 00:00</div>
+        <div class="current-streak-badge" id="streak-badge" aria-live="polite">🔥 7 day streak</div>
+      </div>
+    </header>
+
+    <div class="page-content">
+      <div class="quiz-container">
+
+        <!-- Mode Toggle Selector (Quiz Mode vs Study Q&A Mode) -->
+        <div class="mode-toggle-container mb-md">
+          <div style="font-weight:700; font-size:0.9rem; color:var(--gray-800); display:flex; align-items:center; gap:6px;">
+            <span>Mode:</span>
+            <span id="current-mode-label" style="color:var(--primary-600);">🎯 Adaptive Quiz</span>
+          </div>
+          <div class="mode-toggle-btns" role="tablist" aria-label="Practice Mode Selector">
+            <button class="mode-btn active" id="btn-mode-quiz" onclick="switchPracticeMode('quiz')" role="tab" aria-selected="true">🎯 Quiz Mode</button>
+            <button class="mode-btn" id="btn-mode-study" onclick="switchPracticeMode('study')" role="tab" aria-selected="false">📖 Study Q&A Mode</button>
+          </div>
+        </div>
+
+        <!-- Question Progress -->
+        <div class="question-progress mb-md" id="progress-container">
+          <div class="question-progress-bar" role="progressbar" aria-label="Question progress" aria-valuemin="0" aria-valuemax="10" aria-valuenow="0">
+            <div class="question-progress-fill" id="question-progress-fill" style="width:0%"></div>
+          </div>
+          <div class="question-progress-text" id="question-progress-text">0/10</div>
+        </div>
+
+        <!-- Session Stats -->
+        <div class="session-progress mb-md" role="region" aria-label="Session statistics">
+          <div class="session-stat">
+            <div class="session-stat-value correct" id="session-correct">0</div>
+            <div class="session-stat-label">Correct</div>
+          </div>
+          <div class="session-divider" aria-hidden="true"></div>
+          <div class="session-stat">
+            <div class="session-stat-value incorrect" id="session-incorrect">0</div>
+            <div class="session-stat-label">Incorrect</div>
+          </div>
+          <div class="session-divider" aria-hidden="true"></div>
+          <div class="session-stat">
+            <div class="session-stat-value neutral" id="session-accuracy">—</div>
+            <div class="session-stat-label">Accuracy</div>
+          </div>
+          <div class="session-divider" aria-hidden="true"></div>
+          <div class="session-stat" style="flex:1; text-align:right;">
+            <a href="gaps.html" class="btn btn-ghost btn-sm" id="view-gaps-link">View Gaps →</a>
+          </div>
+        </div>
+
+        <!-- Main Quiz Area -->
+        <div id="quiz-main">
+          <!-- Adaptive Indicator -->
+          <div class="adaptive-indicator" id="adaptive-indicator">
+            <span class="adaptive-icon">🎯</span>
+            <span class="adaptive-text">Finding your best practice area...</span>
+          </div>
+
+          <!-- Session Alerts (gap detection / improvement) -->
+          <div id="session-alerts" aria-live="polite"></div>
+
+          <!-- Question Area -->
+          <div id="question-area">
+            <div class="ai-analyzing">
+              <div class="brain-icon">🧠</div>
+              <h3 style="margin:12px 0 6px; color:var(--primary-700);">Analyzing your learning gaps...</h3>
+              <p style="color:var(--gray-500); margin:0 0 16px;">Finding a unique non-repeating question for your branch</p>
+              <div class="loading-dots"><span></span><span></span><span></span></div>
+            </div>
+          </div>
+
+          <!-- Explanation Area -->
+          <div id="explanation-area"></div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/demo.js"></script>
+<script src="js/engine.js"></script>
+<script src="js/api.js"></script>
+<script src="js/quiz.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const selector = document.getElementById('dept-selector');
+    if (selector) {
+      selector.value = getSelectedDepartment();
+      selector.addEventListener('change', (e) => {
+        setSelectedDepartment(e.target.value);
+        location.reload();
+      });
+    }
+  });
+</script>
+</body>
+</html>

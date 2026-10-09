@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In — LearnGap AI</title>
+  <meta name="description" content="Sign in or create your LearnGap AI account to start your personalized learning journey.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+<div class="auth-page">
+
+  <!-- Left Panel -->
+  <div class="auth-left" aria-hidden="true">
+    <div class="auth-left-content">
+      <a href="index.html" style="display:flex; align-items:center; gap:10px; margin-bottom:48px; text-decoration:none;">
+        <div style="width:42px; height:42px; background:linear-gradient(135deg,var(--primary-400),var(--primary-600)); border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:20px; box-shadow:0 4px 14px rgba(56,189,248,0.4);">🧠</div>
+        <span style="font-family:var(--font-display); font-weight:700; font-size:1.25rem; color:#fff;">LearnGap <span style="color:var(--primary-300)">AI</span></span>
+      </a>
+
+      <h2 class="auth-tagline">
+        Stop guessing.<br>Start <span style="color:var(--primary-300)">mastering.</span>
+      </h2>
+      <p class="auth-desc">
+        LearnGap AI doesn't just quiz you — it analyzes your answers to pinpoint exact knowledge gaps across all engineering departments.
+      </p>
+
+      <!-- Stats -->
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:36px;">
+        <div style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.12); backdrop-filter:blur(10px); border-radius:16px; padding:20px;">
+          <div style="font-family:var(--font-display); font-size:1.5rem; font-weight:800; color:#fff;">6 Branches</div>
+          <div style="font-size:0.8rem; color:rgba(255,255,255,0.7); margin-top:2px;">CSE, ECE, EEE, ME, CE, AI/DS</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.12); backdrop-filter:blur(10px); border-radius:16px; padding:20px;">
+          <div style="font-family:var(--font-display); font-size:1.5rem; font-weight:800; color:#fff;">3.2×</div>
+          <div style="font-size:0.8rem; color:rgba(255,255,255,0.7); margin-top:2px;">faster gap detection</div>
+        </div>
+      </div>
+
+      <div class="auth-testimonial" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); backdrop-filter:blur(12px); border-radius:16px; padding:20px;">
+        <p class="testimonial-text" style="font-size:0.9rem; color:rgba(255,255,255,0.9); font-style:italic; line-height:1.6; margin-bottom:12px;">"LearnGap identified weak spots in Data Structures & Circuits I didn't even know about. The adaptive practice helped me fix them instantly."</p>
+        <div class="testimonial-author" style="display:flex; align-items:center; gap:12px;">
+          <div class="user-avatar" style="width:36px; height:36px; border-radius:50%; overflow:hidden; border:2px solid var(--primary-300);">
+            <img src="assets/images/student_avatar.png" alt="Student Profile" style="width:100%; height:100%; object-fit:cover;">
+          </div>
+          <div>
+            <div class="testimonial-name" style="font-size:0.85rem; font-weight:700; color:#fff;">Shreya K.</div>
+            <div class="testimonial-role" style="font-size:0.75rem; color:rgba(255,255,255,0.7);">Computer Science Student</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Panel (Form) -->
+  <div class="auth-right">
+    <div class="auth-form-container">
+
+      <!-- Tabs -->
+      <div class="tabs" role="tablist" id="auth-tabs">
+        <button class="tab-btn active" role="tab" aria-selected="true" data-tab="login" id="tab-login">Log In</button>
+        <button class="tab-btn" role="tab" aria-selected="false" data-tab="signup" id="tab-signup">Sign Up</button>
+      </div>
+
+      <!-- ── LOGIN FORM ── -->
+      <div id="panel-login" role="tabpanel" aria-labelledby="tab-login">
+        <h2 class="auth-form-title">Welcome back 👋</h2>
+        <p class="auth-form-subtitle">Continue your personalized learning journey.</p>
+
+        <form id="login-form" novalidate>
+          <div class="form-group">
+            <label class="form-label" for="login-email">Email</label>
+            <input type="email" id="login-email" class="form-control" placeholder="you@example.com" required autocomplete="email">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="login-password">Password</label>
+            <input type="password" id="login-password" class="form-control" placeholder="••••••••" required autocomplete="current-password">
+          </div>
+          <button type="submit" class="btn btn-primary w-full" id="login-submit-btn" style="font-size:0.95rem; padding:12px; margin-top:8px;">
+            Log In →
+          </button>
+        </form>
+
+        <div style="text-align:center; margin-top:16px; color:var(--gray-500); font-size:0.85rem;">
+          Don't have an account? <button class="btn btn-ghost btn-sm" onclick="switchTab('signup')" style="color:var(--primary-600); padding:0; font-weight:700;">Sign up free →</button>
+        </div>
+
+        <div class="divider">OR</div>
+
+        <a href="dashboard.html?demo=true" class="btn btn-secondary w-full" onclick="setDemoMode(true)" id="try-demo-btn" style="text-align:center; justify-content:center; padding:11px;">
+          🎮 Try Demo — No account needed
+        </a>
+      </div>
+
+      <!-- ── SIGNUP ONBOARDING ── -->
+      <div id="panel-signup" role="tabpanel" aria-labelledby="tab-signup" style="display:none;">
+
+        <!-- Step Indicator -->
+        <div class="step-indicator" id="step-indicator" aria-label="Registration steps">
+          <div class="step-dot active" data-step="1" id="step-dot-1">1</div>
+          <div class="step-line" id="step-line-1"></div>
+          <div class="step-dot" data-step="2" id="step-dot-2">2</div>
+          <div class="step-line" id="step-line-2"></div>
+          <div class="step-dot" data-step="3" id="step-dot-3">3</div>
+        </div>
+
+        <!-- Step 1: Basic Info -->
+        <div class="onboarding-step active" id="step-1">
+          <h2 class="auth-form-title">Create account</h2>
+          <p class="auth-form-subtitle">Let's get you started in 3 quick steps.</p>
+          <form id="signup-step1-form" novalidate>
+            <div class="form-group">
+              <label class="form-label" for="signup-name">Full Name</label>
+              <input type="text" id="signup-name" class="form-control" placeholder="Alex Johnson" required autocomplete="name">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="signup-email">Email</label>
+              <input type="email" id="signup-email" class="form-control" placeholder="you@example.com" required autocomplete="email">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="signup-password">Password</label>
+              <input type="password" id="signup-password" class="form-control" placeholder="At least 8 characters" minlength="8" required autocomplete="new-password">
+            </div>
+            <button type="submit" class="btn btn-primary w-full" id="step1-next-btn" style="font-size:0.95rem; padding:12px; margin-top:8px;">Continue →</button>
+          </form>
+        </div>
+
+        <!-- Step 2: Department & Learning Profile -->
+        <div class="onboarding-step" id="step-2">
+          <h2 class="auth-form-title">Department</h2>
+          <p class="auth-form-subtitle">Select your engineering branch to customize your path.</p>
+          <form id="signup-step2-form" novalidate>
+            <div class="form-group">
+              <label class="form-label" for="dept-select">Engineering Branch</label>
+              <select id="dept-select" class="form-control" required>
+                <option value="CSE" selected>Computer Science & Engineering (CSE)</option>
+                <option value="ECE">Electronics & Communication (ECE)</option>
+                <option value="EEE">Electrical & Electronics (EEE)</option>
+                <option value="ME">Mechanical Engineering (ME)</option>
+                <option value="CE">Civil Engineering (CE)</option>
+                <option value="AIDS">Artificial Intelligence & Data Science (AI & DS)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="edu-level">Education Level</label>
+              <select id="edu-level" class="form-control" required>
+                <option value="undergraduate" selected>Undergraduate (B.Tech / B.E.)</option>
+                <option value="high_school">High School / Diploma</option>
+                <option value="graduate">Graduate (M.Tech / M.S.)</option>
+                <option value="professional">Professional / Engineer</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="exp-level">Experience Level</label>
+              <select id="exp-level" class="form-control" required>
+                <option value="beginner">Beginner (1st / 2nd Year)</option>
+                <option value="intermediate" selected>Intermediate (3rd / 4th Year)</option>
+                <option value="advanced">Advanced (Exam Prep / Professional)</option>
+              </select>
+            </div>
+            <div style="display:flex; gap:12px;">
+              <button type="button" class="btn btn-secondary" onclick="goToStep(1)" style="flex:1;">← Back</button>
+              <button type="submit" class="btn btn-primary" id="step2-next-btn" style="flex:2;">Continue →</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Step 3: Confirmation -->
+        <div class="onboarding-step" id="step-3">
+          <h2 class="auth-form-title">All set!</h2>
+          <p class="auth-form-subtitle">Your personalized learning path is ready.</p>
+          <div style="padding:16px; background:var(--primary-50); border-radius:12px; border:1px solid var(--primary-200); margin-bottom:20px;">
+            <div style="font-weight:700; color:var(--primary-700); margin-bottom:4px;" id="confirm-dept-title">Computer Science & Engineering</div>
+            <div style="font-size:0.85rem; color:var(--gray-600);">Includes Data Structures, Algorithms, DBMS, Operating Systems, Networks.</div>
+          </div>
+
+          <div style="display:flex; gap:12px; margin-top:24px;">
+            <button type="button" class="btn btn-secondary" onclick="goToStep(2)" style="flex:1;">← Back</button>
+            <button type="button" class="btn btn-primary" id="create-account-btn" style="flex:2;">🚀 Start Learning</button>
+          </div>
+        </div>
+      </div>
+
+      <div style="text-align:center; margin-top:24px;">
+        <a href="index.html" style="color:var(--gray-500); font-size:0.8rem; font-weight:600;">← Back to home</a>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/demo.js"></script>
+<script>
+  function switchTab(tab) {
+    document.querySelectorAll('.tab-btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.tab === tab);
+      b.setAttribute('aria-selected', b.dataset.tab === tab);
+    });
+    document.getElementById('panel-login').style.display = tab === 'login' ? 'block' : 'none';
+    document.getElementById('panel-signup').style.display = tab === 'signup' ? 'block' : 'none';
+  }
+
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+  });
+
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('mode') === 'signup') switchTab('signup');
+
+  let currentStep = 1;
+  function goToStep(step) {
+    document.querySelector(`#step-${currentStep}`).classList.remove('active');
+    document.querySelector(`#step-dot-${currentStep}`).classList.remove('active');
+    currentStep = step;
+    document.querySelector(`#step-${currentStep}`).classList.add('active');
+    document.querySelector(`#step-dot-${currentStep}`).classList.add('active');
+  }
+
+  function advanceStep(from) {
+    if (from < 3) {
+      document.querySelector(`#step-${from}`).classList.remove('active');
+      document.querySelector(`#step-dot-${from}`).classList.remove('active');
+      document.querySelector(`#step-dot-${from}`).classList.add('done');
+      document.querySelector(`#step-dot-${from}`).textContent = '✓';
+      if (document.getElementById(`step-line-${from}`)) {
+        document.getElementById(`step-line-${from}`).classList.add('done');
+      }
+      currentStep = from + 1;
+      document.querySelector(`#step-${currentStep}`).classList.add('active');
+      document.querySelector(`#step-dot-${currentStep}`).classList.add('active');
+    }
+  }
+
+  document.getElementById('login-form').addEventListener('submit', async e => {
+    e.preventDefault();
+    const btn = document.getElementById('login-submit-btn');
+    const email = document.getElementById('login-email').value.trim();
+    const password = document.getElementById('login-password').value;
+
+    if (!email || !password) { ToastManager.error('Please fill in all fields'); return; }
+
+    btn.textContent = 'Signing in...';
+    btn.disabled = true;
+
+    const demoData = getDemoData();
+    const session = { ...demoData.student, email, isDemo: false };
+    setSession(session);
+    ToastManager.success('Logged in! Redirecting...');
+    setTimeout(() => { window.location.href = 'dashboard.html'; }, 800);
+  });
+
+  document.getElementById('signup-step1-form').addEventListener('submit', e => {
+    e.preventDefault();
+    const name = document.getElementById('signup-name').value.trim();
+    const email = document.getElementById('signup-email').value.trim();
+    const password = document.getElementById('signup-password').value;
+    if (!name || !email || !password) { ToastManager.error('Please fill in all fields'); return; }
+    advanceStep(1);
+  });
+
+  document.getElementById('signup-step2-form').addEventListener('submit', e => {
+    e.preventDefault();
+    const dept = document.getElementById('dept-select').value;
+    setSelectedDepartment(dept);
+    document.getElementById('confirm-dept-title').textContent = DEPARTMENTS[dept] || dept;
+    advanceStep(2);
+  });
+
+  document.getElementById('create-account-btn').addEventListener('click', async () => {
+    const dept = document.getElementById('dept-select').value;
+    const studentData = {
+      name: document.getElementById('signup-name').value.trim(),
+      email: document.getElementById('signup-email').value.trim(),
+      department: dept,
+      education_level: document.getElementById('edu-level').value,
+      experience: document.getElementById('exp-level').value,
+      created_at: new Date().toISOString()
+    };
+
+    setSelectedDepartment(dept);
+    setSession(studentData);
+    ToastManager.success('Account created! Welcome to LearnGap AI 🎉');
+    setTimeout(() => { window.location.href = 'dashboard.html'; }, 800);
+  });
+</script>
+</body>
+</html>
